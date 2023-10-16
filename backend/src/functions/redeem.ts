@@ -122,7 +122,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
         const codeTypes: { name: string, id: string }[] = [];
         const seenNames = new Set<string>();
         for (const eveCode of eveCodes) {
-            if (seenNames.has(eveCode.name)) {
+            if (!seenNames.has(eveCode.name)) {
                 codeTypes.push({
                     id: eveCode.id,
                     name: eveCode.name,
