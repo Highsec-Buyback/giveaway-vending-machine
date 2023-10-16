@@ -26,6 +26,5 @@ new BackendStack(app, 'GiveawayVendingMachineStack' + suffix(), {
     // env: { account: '123456789012', region: 'us-east-1' },
 
     /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
-    isProd: isProd(),
-    authKey: isProd() ? process.env.PROD_AUTH_KEY : process.env.DEV_AUTHK_EKY
+    authKey: (isProd() ? process.env.PROD_AUTH_KEY : process.env.DEV_AUTH_KEY) ?? ''
 });

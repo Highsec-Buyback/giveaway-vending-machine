@@ -1,19 +1,17 @@
 import * as cdk from 'aws-cdk-lib';
+import {Duration} from 'aws-cdk-lib';
 import {Construct} from 'constructs';
-import {AttributeType, BillingMode, StreamViewType, Table} from "aws-cdk-lib/aws-dynamodb";
+import {AttributeType, BillingMode, Table} from "aws-cdk-lib/aws-dynamodb";
 import {LambdaIntegration, RestApi} from "aws-cdk-lib/aws-apigateway";
 import {NodejsFunction} from "aws-cdk-lib/aws-lambda-nodejs";
-import {PolicyStatement} from "aws-cdk-lib/aws-iam";
 import {Architecture, Runtime} from "aws-cdk-lib/aws-lambda";
-import {Duration} from "aws-cdk-lib";
 
 export class BackendStack extends cdk.Stack {
-    constructor(scope: Construct, id: string, props?: cdk.StackProps & { isProd: boolean, authKey: string }) {
+    constructor(scope: Construct, id: string, props?: cdk.StackProps & { authKey: string }) {
         super(scope, id, props);
 
         const table = new Table(this, 'Table', {
             billingMode: BillingMode.PAY_PER_REQUEST,
-            timeToLiveAttribute: 'timeToLive',
             partitionKey: {
                 name: 'pk',
                 type: AttributeType.STRING,
@@ -22,7 +20,6 @@ export class BackendStack extends cdk.Stack {
                 name: 'sk',
                 type: AttributeType.STRING,
             },
-            stream: StreamViewType.NEW_IMAGE,
         });
 
         const api = new RestApi(this, "giveaway-vending-machine-api", {
@@ -35,16 +32,14 @@ export class BackendStack extends cdk.Stack {
             environment: {
                 TABLE: table.tableName,
                 AUTH_KEY: props?.authKey ?? '',
-                API_URL: api.url
             },
         });
-        table.grantReadWriteData(createCodeFunction);
+        table.grantWriteData(createCodeFunction);
         const createCodeIntegration = new LambdaIntegration(createCodeFunction, {
             requestTemplates: {"application/json": '{ "statusCode": "200" }'}
         });
         const createCodeResource = api.root.addResource("create");
         createCodeResource.addMethod("GET", createCodeIntegration);
-
 
         const redeemCodeFunction = this.createFunction({
             name: 'RedeemCode',
@@ -65,7 +60,6 @@ export class BackendStack extends cdk.Stack {
         name: string,
         path: string,
         environment?: { [key: string]: string },
-        initialPolicy?: PolicyStatement[]
     }) {
         return new NodejsFunction(this, props.name, {
             entry: props.path,
@@ -81,7 +75,6 @@ export class BackendStack extends cdk.Stack {
             timeout: Duration.seconds(10),
             runtime: Runtime.NODEJS_18_X,
             memorySize: 256,
-            initialPolicy: props.initialPolicy,
         });
     }
 }
