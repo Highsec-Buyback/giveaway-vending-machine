@@ -99,7 +99,9 @@ export const handler: APIGatewayProxyHandler = async (event) => {
                 `${pickResult.code}`,
                 ``
                 `You can redeem the code at https://secure.eveonline.com/activation/`,
-            ])
+            ]);
+
+            console.log(response);
         }
     } else {
         const eveCodes: any[] = await getPaginatedResults(async (ExclusiveStartKey: any) => {
