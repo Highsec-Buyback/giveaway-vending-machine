@@ -32,7 +32,6 @@ export class BackendStack extends cdk.Stack {
             environment: {
                 TABLE: table.tableName,
                 AUTH_KEY: props?.authKey ?? '',
-                API_URL: api.url
             },
         });
         table.grantWriteData(createCodeFunction);

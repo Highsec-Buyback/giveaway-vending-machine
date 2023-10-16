@@ -3,6 +3,15 @@ import {GetCommand, QueryCommand, UpdateCommand} from "@aws-sdk/lib-dynamodb";
 import {ddb, getPaginatedResults} from "../lib/ddb-client";
 
 export const handler: APIGatewayProxyHandler = async (event) => {
+    if (!event.headers.Host) {
+        return {
+            statusCode: 200,
+            headers: {"Content-Type": "text/html"},
+            body: `Missing Host header. Please use this link with a browser.`,
+        };
+    }
+    const apiUrl = `https://${event.headers.Host}`;
+
     const code = event.queryStringParameters?.code;
     if (!code) {
         return {
@@ -87,9 +96,9 @@ export const handler: APIGatewayProxyHandler = async (event) => {
             response.push(...[
                 `Congratulations! Here's your code:`,
                 ``
-                    `${pickResult.code}`,
+                `${pickResult.code}`,
                 ``
-                    `You can redeem the code at https://secure.eveonline.com/activation/`,
+                `You can redeem the code at https://secure.eveonline.com/activation/`,
             ])
         }
     } else {
@@ -129,7 +138,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
         ])
 
         for (const codeType of codeTypes) {
-            response.push(`<li><a href="${process.env.API_URL}?code=${code}&pick=${codeType.id}">${codeType.name}</a></li>`)
+            response.push(`<li><a href="${apiUrl}/redeem?code=${code}&pick=${codeType.id}">${codeType.name}</a></li>`)
         }
 
         response.push(`</ul>`);

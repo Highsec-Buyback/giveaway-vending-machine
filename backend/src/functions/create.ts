@@ -4,6 +4,14 @@ import {ddb} from "../lib/ddb-client";
 import {ulid} from "ulid";
 
 export const handler: APIGatewayProxyHandler = async (event) => {
+    if (!event.headers.Host) {
+        return {
+            statusCode: 200,
+            headers: {"Content-Type": "text/html"},
+            body: `Missing Host header. Please use this link with a browser.`,
+        };
+    }
+    const apiUrl = `https://${event.headers.Host}`;
     const authKey = event.queryStringParameters?.authKey;
     if (!authKey || authKey != process.env.AUTH_KEY) {
         return {
@@ -26,6 +34,6 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     return {
         statusCode: 200,
         headers: {"Content-Type": "text/plain"},
-        body: `${process.env.API_URL}/redeem?code=${id}`,
+        body: `${apiUrl}/redeem?code=${id}`,
     };
 };
