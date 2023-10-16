@@ -10,7 +10,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
             body: `Missing Host header. Please use this link with a browser.`,
         };
     }
-    const apiUrl = `https://${event.headers.Host}/${process.env.PATH_SUFFIX}`;
+    const apiUrl = `https://${event.headers.Host}/prod`;
 
     const code = event.queryStringParameters?.code;
     if (!code) {
@@ -93,13 +93,17 @@ export const handler: APIGatewayProxyHandler = async (event) => {
                 }
             }));
 
+            console.log('Before responses')
+
             response.push(...[
                 `Congratulations! Here's your code:`,
-                ``
-                `${pickResult.code}`,
-                ``
+                `<br/>`,
+                `<pre>${pickResult.code}</pre>`,
+                `<br/>`,
                 `You can redeem the code at https://secure.eveonline.com/activation/`,
-            ])
+            ]);
+
+            console.log(response);
         }
     } else {
         const eveCodes: any[] = await getPaginatedResults(async (ExclusiveStartKey: any) => {
@@ -107,8 +111,12 @@ export const handler: APIGatewayProxyHandler = async (event) => {
                 .send(new QueryCommand({
                     TableName: process.env.TABLE,
                     KeyConditionExpression: 'pk = :pk',
+                    FilterExpression: 'attribute_not_exists(#used)',
                     ExpressionAttributeValues: {
                         ':pk': `eve-codes`,
+                    },
+                    ExpressionAttributeNames: {
+                        '#used': 'used',
                     },
                     ExclusiveStartKey,
                 }));
@@ -122,7 +130,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
         const codeTypes: { name: string, id: string }[] = [];
         const seenNames = new Set<string>();
         for (const eveCode of eveCodes) {
-            if (seenNames.has(eveCode.name)) {
+            if (!seenNames.has(eveCode.name)) {
                 codeTypes.push({
                     id: eveCode.id,
                     name: eveCode.name,
@@ -133,7 +141,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
         response.push(...[
             `Here's what we have available for you. Choose one, and click the link to redeem your code:`,
-            ``,
+            `<br/>`,
             `<ul>`,
         ])
 
@@ -146,7 +154,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
     return {
         statusCode: 200,
-        headers: {"Content-Type": "text/plain"},
+        headers: {"Content-Type": "text/html"},
         body: response.join('\n'),
     };
 };

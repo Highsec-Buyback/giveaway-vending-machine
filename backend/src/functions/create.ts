@@ -11,7 +11,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
             body: `Missing Host header. Please use this link with a browser.`,
         };
     }
-    const apiUrl = `https://${event.headers.Host}/${process.env.PATH_SUFFIX}`;
+    const apiUrl = `https://${event.headers.Host}/prod`;
     const authKey = event.queryStringParameters?.authKey;
     if (!authKey || authKey != process.env.AUTH_KEY) {
         return {
@@ -34,6 +34,6 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     return {
         statusCode: 200,
         headers: {"Content-Type": "text/plain"},
-        body: `${apiUrl}/redeem?code=${id}`,
+        body: `Congratulations on winning the giveaway! Follow this link to choose your prize: ${apiUrl}/redeem?code=${id}`,
     };
 };

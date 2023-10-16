@@ -7,7 +7,7 @@ import {NodejsFunction} from "aws-cdk-lib/aws-lambda-nodejs";
 import {Architecture, Runtime} from "aws-cdk-lib/aws-lambda";
 
 export class BackendStack extends cdk.Stack {
-    constructor(scope: Construct, id: string, props?: cdk.StackProps & { authKey: string, isProd: boolean }) {
+    constructor(scope: Construct, id: string, props?: cdk.StackProps & { authKey: string }) {
         super(scope, id, props);
 
         const table = new Table(this, 'Table', {
@@ -32,7 +32,6 @@ export class BackendStack extends cdk.Stack {
             environment: {
                 TABLE: table.tableName,
                 AUTH_KEY: props?.authKey ?? '',
-                PATH_SUFFIX: props?.isProd ? 'prod' : 'dev'
             },
         });
         table.grantWriteData(createCodeFunction);
@@ -47,7 +46,6 @@ export class BackendStack extends cdk.Stack {
             path: './src/functions/redeem.ts',
             environment: {
                 TABLE: table.tableName,
-                PATH_SUFFIX: props?.isProd ? 'prod' : 'dev'
             },
         });
         table.grantReadWriteData(redeemCodeFunction);
