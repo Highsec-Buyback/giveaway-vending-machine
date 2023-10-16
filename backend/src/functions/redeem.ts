@@ -58,7 +58,6 @@ export const handler: APIGatewayProxyHandler = async (event) => {
             ExpressionAttributeNames: {
                 '#used': 'used',
             },
-            Limit: 1
         }))).Items ?? [];
         if (pickResults.length == 0) {
             return {
