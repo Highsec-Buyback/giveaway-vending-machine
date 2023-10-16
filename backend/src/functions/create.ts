@@ -34,6 +34,6 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     return {
         statusCode: 200,
         headers: {"Content-Type": "text/plain"},
-        body: `${apiUrl}/redeem?code=${id}`,
+        body: `Congratulations on winning the giveaway! Follow this link to choose your prize: ${apiUrl}/redeem?code=${id}`,
     };
 };
