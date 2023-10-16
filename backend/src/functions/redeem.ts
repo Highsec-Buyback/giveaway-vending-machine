@@ -10,7 +10,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
             body: `Missing Host header. Please use this link with a browser.`,
         };
     }
-    const apiUrl = `https://${event.headers.Host}/${process.env.PATH_SUFFIX}`;
+    const apiUrl = `https://${event.headers.Host}/prod`;
 
     const code = event.queryStringParameters?.code;
     if (!code) {
