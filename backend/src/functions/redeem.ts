@@ -146,7 +146,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
     return {
         statusCode: 200,
-        headers: {"Content-Type": "text/plain"},
+        headers: {"Content-Type": "text/html"},
         body: response.join('\n'),
     };
 };
