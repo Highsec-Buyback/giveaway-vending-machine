@@ -101,9 +101,9 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
             response.push(...[
                 `Congratulations! Here's your code:`,
-                `<br/><br/>`
+                `<br/>`,
                 `<pre>${pickResult.code}</pre>`,
-                `<br/><br/>`
+                `<br/>`,
                 `You can redeem the code at https://secure.eveonline.com/activation/`,
             ]);
 
