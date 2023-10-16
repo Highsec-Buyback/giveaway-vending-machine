@@ -50,9 +50,13 @@ export const handler: APIGatewayProxyHandler = async (event) => {
         const pickResults = (await ddb.send(new QueryCommand({
             TableName: process.env.TABLE,
             KeyConditionExpression: 'pk = :pk and begins_with(sk, :sk)',
+            FilterExpression: 'attribute_not_exists(#used)',
             ExpressionAttributeValues: {
                 ':pk': `eve-codes`,
                 ':sk': `${pick}`
+            },
+            ExpressionAttributeNames: {
+                '#used': 'used',
             },
             Limit: 1
         }))).Items ?? [];
