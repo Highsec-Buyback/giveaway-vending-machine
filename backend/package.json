@@ -8,7 +8,8 @@
     "build": "tsc",
     "watch": "tsc -w",
     "cdk": "cdk",
-    "deploy": "cdk deploy"
+    "deploy": "cdk deploy --require-approval=never",
+    "destroy:force": "cdk destroy --force"
   },
   "devDependencies": {
     "@types/aws-lambda": "8.10.124",

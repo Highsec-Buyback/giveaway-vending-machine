@@ -1,6 +1,6 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient} from "@aws-sdk/lib-dynamodb";
-const rawDdbClient = new DynamoDBClient({});
+const rawDdbClient = new DynamoDBClient();
 
 const marshallOptions = {
     // Whether to automatically convert empty strings, blobs, and sets to `null`.
