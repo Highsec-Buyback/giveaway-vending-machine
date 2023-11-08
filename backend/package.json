@@ -20,8 +20,8 @@
     "typescript": "5.2.2"
   },
   "dependencies": {
-    "@aws-sdk/client-dynamodb": "3.441.0",
-    "@aws-sdk/lib-dynamodb": "3.444.0",
+    "@aws-sdk/client-dynamodb": "3.445.0",
+    "@aws-sdk/lib-dynamodb": "3.445.0",
     "aws-cdk-lib": "2.104.0",
     "constructs": "10.3.0",
     "source-map-support": "0.5.21",
