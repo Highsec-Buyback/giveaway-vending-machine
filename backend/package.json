@@ -14,7 +14,7 @@
   "devDependencies": {
     "@types/aws-lambda": "8.10.134",
     "@types/node": "20.11.24",
-    "aws-cdk": "2.130.0",
+    "aws-cdk": "2.131.0",
     "esbuild": "0.19.12",
     "ts-node": "10.9.2",
     "typescript": "5.3.3"
@@ -22,7 +22,7 @@
   "dependencies": {
     "@aws-sdk/client-dynamodb": "3.502.0",
     "@aws-sdk/lib-dynamodb": "3.502.0",
-    "aws-cdk-lib": "2.130.0",
+    "aws-cdk-lib": "2.131.0",
     "constructs": "10.3.0",
     "source-map-support": "0.5.21",
     "ulid": "2.3.0"
