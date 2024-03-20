@@ -17,7 +17,7 @@
     "aws-cdk": "2.133.0",
     "esbuild": "0.19.12",
     "ts-node": "10.9.2",
-    "typescript": "5.4.2"
+    "typescript": "5.4.3"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "3.502.0",
