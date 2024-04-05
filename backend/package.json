@@ -12,7 +12,7 @@
     "destroy:force": "cdk destroy --force"
   },
   "devDependencies": {
-    "@types/aws-lambda": "8.10.136",
+    "@types/aws-lambda": "8.10.137",
     "@types/node": "20.12.4",
     "aws-cdk": "2.135.0",
     "esbuild": "0.19.12",
