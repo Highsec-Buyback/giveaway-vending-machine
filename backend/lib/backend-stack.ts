@@ -7,7 +7,7 @@ import {NodejsFunction} from "aws-cdk-lib/aws-lambda-nodejs";
 import {Architecture, Runtime} from "aws-cdk-lib/aws-lambda";
 
 export class BackendStack extends cdk.Stack {
-    constructor(scope: Construct, id: string, props?: cdk.StackProps & { authKey: string }) {
+    constructor(scope: Construct, id: string, props?: cdk.StackProps & { authKey: string, isPr?: boolean }) {
         super(scope, id, props);
 
         const table = new Table(this, 'Table', {
@@ -20,6 +20,7 @@ export class BackendStack extends cdk.Stack {
                 name: 'sk',
                 type: AttributeType.STRING,
             },
+            deletionProtection: !props?.isPr,
         });
 
         const api = new RestApi(this, "giveaway-vending-machine-api", {
