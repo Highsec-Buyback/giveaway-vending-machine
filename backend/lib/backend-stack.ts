@@ -20,7 +20,7 @@ export class BackendStack extends cdk.Stack {
                 name: 'sk',
                 type: AttributeType.STRING,
             },
-            deletionProtection: !props?.isPr,
+            removalPolicy: props?.isPr ? cdk.RemovalPolicy.DESTROY : cdk.RemovalPolicy.RETAIN,
         });
 
         const api = new RestApi(this, "giveaway-vending-machine-api", {
