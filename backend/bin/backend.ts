@@ -27,4 +27,5 @@ new BackendStack(app, 'GiveawayVendingMachineStack' + suffix(), {
 
     /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
     authKey: (isProd() ? process.env.PROD_AUTH_KEY : process.env.DEV_AUTH_KEY) ?? '',
+    isPr: !!suffix(),
 });
